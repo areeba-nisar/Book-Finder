@@ -1,0 +1,199 @@
+/* Book Finder — modern reading-room theme */
+
+:root {
+    --ink: #16121e;
+    --ink-raised: #201a2b;
+    --paper: #f3eee4;
+    --muted: #a39cb0;
+    --gilt: #f0b33f;
+    --gilt-hover: #ffc865;
+    --line: rgba(243, 238, 228, 0.14);
+    --radius: 6px;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    min-height: 100vh;
+    font-family: var(--sans);
+    line-height: 1.5;
+    color: var(--paper);
+    background-color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
+
+.container{
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 0 96px;
+    text-align: center;
+}
+
+h1{
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 32px;
+}
+
+/* Search row */
+#searchInput,
+#searchBtn{
+    font-family: var(--sans);
+    font-size: 16px;
+    height: 52px;
+    border: 1px solid var(--line);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+#searchInput{
+    width: min(420px, 100%);
+    padding: 0 18px;
+    border-radius: var(--radius) 0 0 var(--radius);
+    background: var(--ink-raised);
+    color: var(--paper);
+    outline: none;
+}
+
+#searchInput::placeholder{
+    color: var(--muted);
+}
+
+#searchInput:focus{
+    border-color: var(--gilt);
+}
+
+#searchBtn{
+    padding: 0 26px;
+    margin-left: 0;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    border-left: none;
+    background: var(--gilt);
+    color: var(--ink);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#searchBtn:hover{
+    background: var(--gilt-hover);
+}
+
+#searchBtn:focus-visible{
+    outline: 2px solid var(--paper);
+    outline-offset: 3px;
+}
+
+/* Status messages (Loading / No Book Found) */
+#books > h2{
+    grid-column: 1 / -1;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--muted);
+    margin-top: 24px;
+}
+
+/* Results grid */
+#books{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 36px 28px;
+    margin-top: 56px;
+    text-align: left;
+}
+
+.book{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: rise 0.5s ease both;
+}
+
+/* Stagger the reveal so results arrive as a sequence */
+.book:nth-child(2) { animation-delay: 0.04s; }
+.book:nth-child(3) { animation-delay: 0.08s; }
+.book:nth-child(4) { animation-delay: 0.12s; }
+.book:nth-child(5) { animation-delay: 0.16s; }
+.book:nth-child(n+6) { animation-delay: 0.2s; }
+
+.book img{
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    height: auto;
+    object-fit: cover;
+    border-radius: 3px 6px 6px 3px;
+    background: var(--ink-raised);
+    box-shadow:
+        inset 6px 0 8px -6px rgba(0, 0, 0, 0.55),
+        0 12px 24px -12px rgba(0, 0, 0, 0.7);
+}
+
+.book h2{
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: var(--paper);
+    margin: 0;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 600px){
+    .container{
+        padding-top: 40px;
+    }
+
+    #searchInput{
+        width: 100%;
+    }
+
+    #searchInput,
+    #searchBtn{
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    #searchInput{
+        width: calc(100% - 110px);
+    }
+
+    #searchBtn{
+        padding: 0 18px;
+    }
+
+    #books{
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 28px 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .book{
+        animation: none;
+    }
+}
